@@ -1,0 +1,1479 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SaaS Subscription UX — Landscape Assessment</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0f1117;
+    --surface: #181c27;
+    --surface-2: #1e2333;
+    --border: #2a2f42;
+    --text: #e8eaf0;
+    --text-muted: #7a8099;
+    --text-dim: #4a5068;
+    --accent: #6c8eff;
+    --accent-warm: #ff8a5b;
+    --accent-green: #4ecb8a;
+    --accent-purple: #b06fff;
+    --accent-gold: #f5c842;
+    --tag-bg: #1e2333;
+    --radius: 12px;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.65;
+    font-size: 15px;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ── LAYOUT ── */
+  .page {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 32px 100px;
+  }
+
+  /* ── HERO ── */
+  .hero {
+    padding: 72px 0 56px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 56px;
+  }
+  .hero-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 20px;
+    display: block;
+  }
+  .hero h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(36px, 5vw, 58px);
+    font-weight: 700;
+    line-height: 1.12;
+    color: #fff;
+    max-width: 760px;
+    margin-bottom: 20px;
+  }
+  .hero h1 em {
+    font-style: italic;
+    color: var(--accent);
+  }
+  .hero-sub {
+    color: var(--text-muted);
+    font-size: 16px;
+    max-width: 640px;
+    font-weight: 300;
+  }
+  .hero-meta {
+    display: flex;
+    gap: 32px;
+    margin-top: 36px;
+  }
+  .meta-item {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+  .meta-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+  }
+  .meta-value {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text);
+  }
+
+  /* ── SECTION ── */
+  .section {
+    margin-bottom: 72px;
+  }
+  .section-header {
+    display: flex;
+    align-items: baseline;
+    gap: 16px;
+    margin-bottom: 32px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--border);
+  }
+  .section-num {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--accent);
+    letter-spacing: 0.1em;
+    flex-shrink: 0;
+  }
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 26px;
+    font-weight: 700;
+    color: #fff;
+  }
+
+  /* ── DIMENSION GRID ── */
+  .dimension-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    margin-bottom: 40px;
+  }
+  .dimension-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 20px;
+  }
+  .dimension-card .d-icon {
+    font-size: 22px;
+    margin-bottom: 10px;
+  }
+  .dimension-card h4 {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 6px;
+  }
+  .dimension-card p {
+    font-size: 12px;
+    color: var(--text-muted);
+    line-height: 1.5;
+  }
+
+  /* ── PLATFORM CARDS ── */
+  .platform-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 28px;
+  }
+  .platform-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    overflow: hidden;
+  }
+  .platform-header {
+    padding: 24px 28px 20px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 20px;
+  }
+  .platform-identity {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+  .platform-icon {
+    width: 42px;
+    height: 42px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    flex-shrink: 0;
+  }
+  .platform-name {
+    font-size: 18px;
+    font-weight: 600;
+    color: #fff;
+    margin-bottom: 3px;
+  }
+  .platform-type {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+  }
+  .complexity-badge {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 5px;
+    flex-shrink: 0;
+  }
+  .complexity-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+  }
+  .complexity-dots {
+    display: flex;
+    gap: 4px;
+  }
+  .dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--border);
+  }
+  .dot.active { background: var(--accent-warm); }
+
+  .platform-body {
+    padding: 24px 28px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+  }
+  @media (max-width: 700px) {
+    .platform-body { grid-template-columns: 1fr; }
+    .dimension-grid { grid-template-columns: 1fr; }
+  }
+
+  .platform-col h4 {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    margin-bottom: 12px;
+  }
+  .platform-col p {
+    font-size: 13.5px;
+    color: var(--text-muted);
+    line-height: 1.6;
+    margin-bottom: 10px;
+  }
+  .tag-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 7px;
+    margin-top: 10px;
+  }
+  .tag {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    padding: 4px 9px;
+    border-radius: 20px;
+    border: 1px solid var(--border);
+    color: var(--text-muted);
+    background: var(--tag-bg);
+  }
+  .tag.blue { border-color: rgba(108,142,255,0.4); color: var(--accent); }
+  .tag.green { border-color: rgba(78,203,138,0.4); color: var(--accent-green); }
+  .tag.warm { border-color: rgba(255,138,91,0.4); color: var(--accent-warm); }
+  .tag.purple { border-color: rgba(176,111,255,0.4); color: var(--accent-purple); }
+  .tag.gold { border-color: rgba(245,200,66,0.4); color: var(--accent-gold); }
+
+  .platform-footer {
+    padding: 16px 28px;
+    background: rgba(255,255,255,0.02);
+    border-top: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+  .signal {
+    font-size: 12px;
+    color: var(--text-muted);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .signal strong {
+    color: var(--text);
+    font-weight: 500;
+  }
+  .signal::before {
+    content: '';
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--accent-green);
+    flex-shrink: 0;
+  }
+  .signal.warn::before { background: var(--accent-warm); }
+  .signal.neutral::before { background: var(--text-dim); }
+
+  .platform-link {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    color: var(--accent);
+    text-decoration: none;
+    border-bottom: 1px solid rgba(108,142,255,0.3);
+    padding-bottom: 1px;
+  }
+  .platform-link:hover { border-color: var(--accent); }
+
+  /* ── PATTERN MATRIX ── */
+  .pattern-matrix {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    overflow: hidden;
+  }
+  .matrix-row {
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    border-bottom: 1px solid var(--border);
+  }
+  .matrix-row:last-child { border-bottom: none; }
+  .matrix-row.header-row {
+    background: rgba(255,255,255,0.03);
+  }
+  .matrix-cell {
+    padding: 18px 20px;
+    border-right: 1px solid var(--border);
+    font-size: 13px;
+  }
+  .matrix-cell:last-child { border-right: none; }
+  .matrix-cell.label {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--text);
+    letter-spacing: 0.06em;
+  }
+  .matrix-cell.header {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    font-weight: 400;
+  }
+
+  .platform-pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+  .ppill {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    padding: 3px 8px;
+    border-radius: 12px;
+    background: var(--surface-2);
+    color: var(--text-muted);
+    border: 1px solid var(--border);
+  }
+
+  /* ── CALLOUT ── */
+  .callout {
+    border-radius: 12px;
+    padding: 20px 22px;
+    margin: 20px 0;
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+  }
+  .callout.insight { background: rgba(108,142,255,0.07); border: 1px solid rgba(108,142,255,0.2); }
+  .callout.watch { background: rgba(255,138,91,0.07); border: 1px solid rgba(255,138,91,0.2); }
+  .callout.model { background: rgba(78,203,138,0.07); border: 1px solid rgba(78,203,138,0.2); }
+  .callout-icon { font-size: 18px; flex-shrink: 0; margin-top: 1px; }
+  .callout-body { flex: 1; }
+  .callout-body strong {
+    display: block;
+    font-size: 13px;
+    font-weight: 600;
+    margin-bottom: 5px;
+  }
+  .callout.insight strong { color: var(--accent); }
+  .callout.watch strong { color: var(--accent-warm); }
+  .callout.model strong { color: var(--accent-green); }
+  .callout-body p { font-size: 13px; color: var(--text-muted); line-height: 1.55; }
+
+  /* ── RECOMMENDATIONS ── */
+  .rec-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+  }
+  .rec-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 22px;
+  }
+  .rec-card .rec-num {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--accent);
+    margin-bottom: 10px;
+    display: block;
+  }
+  .rec-card h4 {
+    font-size: 15px;
+    font-weight: 600;
+    color: #fff;
+    margin-bottom: 10px;
+    line-height: 1.3;
+  }
+  .rec-card p {
+    font-size: 13px;
+    color: var(--text-muted);
+    line-height: 1.6;
+  }
+  .rec-card .rec-inspired {
+    margin-top: 12px;
+    font-size: 11px;
+    color: var(--text-dim);
+    font-family: 'DM Mono', monospace;
+  }
+  .rec-card .rec-inspired span {
+    color: var(--accent);
+  }
+
+  /* ── USER PATH ── */
+  .path-flow {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+  .path-step {
+    display: grid;
+    grid-template-columns: 48px 1fr;
+    gap: 20px;
+    position: relative;
+  }
+  .step-track {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0;
+  }
+  .step-node {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: var(--surface-2);
+    border: 2px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--text-muted);
+    flex-shrink: 0;
+    z-index: 1;
+  }
+  .step-node.active {
+    background: rgba(108,142,255,0.15);
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+  .step-line {
+    width: 2px;
+    flex: 1;
+    background: var(--border);
+    min-height: 32px;
+  }
+  .path-step:last-child .step-line { display: none; }
+  .step-content {
+    padding: 4px 0 28px;
+  }
+  .step-content h4 {
+    font-size: 15px;
+    font-weight: 600;
+    color: #fff;
+    margin-bottom: 6px;
+  }
+  .step-content p {
+    font-size: 13px;
+    color: var(--text-muted);
+    line-height: 1.6;
+  }
+  .step-detail {
+    margin-top: 10px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 12px 14px;
+  }
+  .step-detail ul {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+  }
+  .step-detail li {
+    font-size: 12px;
+    color: var(--text-muted);
+    padding-left: 16px;
+    position: relative;
+  }
+  .step-detail li::before {
+    content: '→';
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+    font-size: 11px;
+  }
+
+  /* ── YOUR PLATFORM CONTEXT ── */
+  .context-box {
+    background: linear-gradient(135deg, rgba(108,142,255,0.05), rgba(176,111,255,0.05));
+    border: 1px solid rgba(108,142,255,0.25);
+    border-radius: 16px;
+    padding: 28px;
+    margin-bottom: 48px;
+  }
+  .context-box h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 20px;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 12px;
+  }
+  .context-box p {
+    font-size: 14px;
+    color: var(--text-muted);
+    line-height: 1.7;
+    max-width: 820px;
+  }
+  .context-products {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 18px;
+  }
+  .context-product {
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 10px 14px;
+    font-size: 12px;
+  }
+  .context-product .cp-name {
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 3px;
+  }
+  .context-product .cp-tiers {
+    color: var(--text-muted);
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.06em;
+  }
+  .ai-pill {
+    display: inline-block;
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    padding: 2px 6px;
+    border-radius: 8px;
+    background: rgba(176,111,255,0.15);
+    color: var(--accent-purple);
+    border: 1px solid rgba(176,111,255,0.3);
+    margin-left: 6px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    vertical-align: middle;
+  }
+
+  /* ── TOC ── */
+  .toc {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px 24px;
+    margin-bottom: 48px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 24px;
+  }
+  .toc-item {
+    font-size: 13px;
+    color: var(--text-muted);
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .toc-item:hover { color: var(--accent); }
+  .toc-item .toc-num {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: var(--text-dim);
+  }
+
+  .divider {
+    height: 1px;
+    background: var(--border);
+    margin: 48px 0;
+  }
+
+  /* ── FOOTNOTE ── */
+  .footnote {
+    border-top: 1px solid var(--border);
+    padding-top: 24px;
+    margin-top: 48px;
+    font-size: 12px;
+    color: var(--text-dim);
+    line-height: 1.7;
+  }
+  .footnote a { color: var(--accent); text-decoration: none; }
+  .footnote a:hover { text-decoration: underline; }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- HERO -->
+  <header class="hero">
+    <span class="hero-label">Design Research · Landscape Assessment</span>
+    <h1>Complex Subscriptions &amp; <em>Seat Management</em> in SaaS Platforms</h1>
+    <p class="hero-sub">A cross-platform analysis of admin views, member management patterns, and subscription architecture — oriented toward redesign spec development for a multi-product workspace platform.</p>
+    <div class="hero-meta">
+      <div class="meta-item"><span class="meta-label">Platforms Reviewed</span><span class="meta-value">9</span></div>
+      <div class="meta-item"><span class="meta-label">Focus Areas</span><span class="meta-value">Seat Mgmt · Admin vs. User Views</span></div>
+      <div class="meta-item"><span class="meta-label">Goal</span><span class="meta-value">Input for redesign / design spec</span></div>
+    </div>
+  </header>
+
+  <!-- TOC -->
+  <nav class="toc">
+    <a href="#context" class="toc-item"><span class="toc-num">00</span> Your Platform Context</a>
+    <a href="#dimensions" class="toc-item"><span class="toc-num">01</span> Research Dimensions</a>
+    <a href="#platforms" class="toc-item"><span class="toc-num">02</span> Platform Breakdowns</a>
+    <a href="#patterns" class="toc-item"><span class="toc-num">03</span> Design Pattern Taxonomy</a>
+    <a href="#recommendations" class="toc-item"><span class="toc-num">04</span> Design Recommendations</a>
+    <a href="#userpath" class="toc-item"><span class="toc-num">05</span> Proposed Admin User Path</a>
+  </nav>
+
+  <!-- CONTEXT -->
+  <section id="context" class="section">
+    <div class="section-header">
+      <span class="section-num">00</span>
+      <h2 class="section-title">Your Platform: Gloo Workspace</h2>
+    </div>
+    <div class="context-box">
+      <h3>Understanding the Problem Space</h3>
+      <p>Gloo's Workspace platform presents a uniquely layered subscription challenge: multiple standalone products under one roof, each with its own seat logic, free/paid tiers, and resource models. Two products — Content Studio and Ministry Chat — introduce AI-specific resource meters (credits vs. tokens), which is a pattern not widely solved cleanly in the market. The Gloo+ upgrade model (individual-level upgrade within an always-free product) is particularly rare and has few direct analogues.</p>
+      <div class="context-products">
+        <div class="context-product">
+          <div class="cp-name">Gloo Communications</div>
+          <div class="cp-tiers">Always Free · Unlimited Seats · Individual → Gloo+</div>
+        </div>
+        <div class="context-product">
+          <div class="cp-name">Content Studio <span class="ai-pill">AI Credits</span></div>
+          <div class="cp-tiers">Tiered Seats · AI Credit Metering</div>
+        </div>
+        <div class="context-product">
+          <div class="cp-name">Ministry Chat <span class="ai-pill">AI Tokens</span></div>
+          <div class="cp-tiers">Tiered Seats · Token Metering</div>
+        </div>
+        <div class="context-product">
+          <div class="cp-name">Other Products</div>
+          <div class="cp-tiers">Free / Pro / Plus / Separate Seats</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- RESEARCH DIMENSIONS -->
+  <section id="dimensions" class="section">
+    <div class="section-header">
+      <span class="section-num">01</span>
+      <h2 class="section-title">What We're Analyzing</h2>
+    </div>
+    <div class="dimension-grid">
+      <div class="dimension-card">
+        <div class="d-icon">🏗️</div>
+        <h4>Subscription Architecture</h4>
+        <p>How products, plans, and seats are structured — flat vs. nested, per-product vs. unified.</p>
+      </div>
+      <div class="dimension-card">
+        <div class="d-icon">👥</div>
+        <h4>Seat / Member Management</h4>
+        <p>How admins add, remove, and upgrade members. Seat pools, request flows, and seat types.</p>
+      </div>
+      <div class="dimension-card">
+        <div class="d-icon">🛡️</div>
+        <h4>Admin vs. End-User Views</h4>
+        <p>What the admin-only surface looks like and how it differs from the member/user experience.</p>
+      </div>
+      <div class="dimension-card">
+        <div class="d-icon">🔐</div>
+        <h4>Role Hierarchy</h4>
+        <p>The layers between org-level admin and end-user — how permission delegation is modeled.</p>
+      </div>
+      <div class="dimension-card">
+        <div class="d-icon">⚡</div>
+        <h4>Feature Gating</h4>
+        <p>How plan differences are surfaced in-product — upgrade prompts, locked states, contextual upsells.</p>
+      </div>
+      <div class="dimension-card">
+        <div class="d-icon">🤖</div>
+        <h4>AI / Usage Metering</h4>
+        <p>Platforms handling credit, token, or usage-based models within their subscription structure.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- PLATFORM BREAKDOWNS -->
+  <section id="platforms" class="section">
+    <div class="section-header">
+      <span class="section-num">02</span>
+      <h2 class="section-title">Platform Breakdowns</h2>
+    </div>
+
+    <div class="platform-grid">
+
+      <!-- MONDAY.COM -->
+      <div class="platform-card">
+        <div class="platform-header">
+          <div class="platform-identity">
+            <div class="platform-icon" style="background:#1F76C2;">📋</div>
+            <div>
+              <div class="platform-name">Monday.com</div>
+              <div class="platform-type">Work OS · Multiple Products</div>
+            </div>
+          </div>
+          <div class="complexity-badge">
+            <span class="complexity-label">Structural complexity</span>
+            <div class="complexity-dots">
+              <div class="dot active"></div><div class="dot active"></div><div class="dot active"></div><div class="dot active"></div><div class="dot"></div>
+            </div>
+          </div>
+        </div>
+        <div class="platform-body">
+          <div class="platform-col">
+            <h4>Subscription Architecture</h4>
+            <p>Four standalone products (Work Management, CRM, Dev, Service), each with its own plan tiers and seat count. Products can be bundled but must share a billing cycle. Seat pricing uses "bucket" increments (5, 10, 15…), not per-seat exact pricing.</p>
+            <p>A <strong>Product Non-Member</strong> role exists for users subscribed to one product but not another — they get read-only access to the others automatically.</p>
+            <div class="tag-row">
+              <span class="tag warm">Per-product seats</span>
+              <span class="tag blue">Bucket pricing</span>
+              <span class="tag">Bundle model</span>
+            </div>
+          </div>
+          <div class="platform-col">
+            <h4>Admin View &amp; Seat Management</h4>
+            <p>The Administration panel (accessible via avatar → Administration) hosts a Users tab with full member table: role, product access, department, seat status. Admins can bulk-edit roles, assign departments with reserved seat pools, and delegate department-level admin rights.</p>
+            <p>Custom roles are Enterprise-only. Viewers are free and unlimited across all plans.</p>
+            <div class="tag-row">
+              <span class="tag green">Delegated dept. owners</span>
+              <span class="tag blue">Viewer = free</span>
+              <span class="tag">Guest tiering</span>
+            </div>
+          </div>
+        </div>
+        <div class="platform-footer">
+          <span class="signal"><strong>Design Signal:</strong> Product Non-Member is a clever auto-downgrade — users keep read access to unsubscribed products without buying a seat.</span>
+          <a href="https://support.monday.com/hc/en-us/articles/4405633151634" class="platform-link" target="_blank">Pricing docs →</a>
+        </div>
+      </div>
+
+      <!-- GOOGLE WORKSPACE -->
+      <div class="platform-card">
+        <div class="platform-header">
+          <div class="platform-identity">
+            <div class="platform-icon" style="background:#EA4335;">🔵</div>
+            <div>
+              <div class="platform-name">Google Workspace</div>
+              <div class="platform-type">Productivity Suite · Unified License</div>
+            </div>
+          </div>
+          <div class="complexity-badge">
+            <span class="complexity-label">Structural complexity</span>
+            <div class="complexity-dots">
+              <div class="dot active"></div><div class="dot active"></div><div class="dot active"></div><div class="dot"></div><div class="dot"></div>
+            </div>
+          </div>
+        </div>
+        <div class="platform-body">
+          <div class="platform-col">
+            <h4>Subscription Architecture</h4>
+            <p>Flat per-user licensing — one edition (Starter, Business Starter, Business Standard, Business Plus, Enterprise) covers the full product suite. No per-product subscriptions. All Google apps are included; access is controlled at the org or OU level.</p>
+            <div class="tag-row">
+              <span class="tag blue">Unified license</span>
+              <span class="tag">Org-level app toggles</span>
+              <span class="tag warm">Edition-based features</span>
+            </div>
+          </div>
+          <div class="platform-col">
+            <h4>Admin View &amp; Seat Management</h4>
+            <p>The Google Admin Console (admin.google.com) is a purpose-built, power-dense interface. Users are organized by Organizational Units (OUs) — the primary method for applying policies at scale. Admin roles are pre-built (User Management Admin, Groups Admin, etc.) or custom, with granular privilege scoping.</p>
+            <p>Super Admin role has exclusive access to billing, security, and account recovery. No concept of "seats" — purchasing is by edition per user.</p>
+            <div class="tag-row">
+              <span class="tag green">Org Unit (OU) structure</span>
+              <span class="tag blue">Pre-built + custom roles</span>
+              <span class="tag">750 custom role limit</span>
+            </div>
+          </div>
+        </div>
+        <div class="platform-footer">
+          <span class="signal neutral"><strong>Design Signal:</strong> OUs are a powerful but invisible structure — admins must learn the mental model. Great at scale; complex to onboard to.</span>
+          <a href="https://knowledge.workspace.google.com/admin/users/about-administrator-roles" class="platform-link" target="_blank">Admin roles docs →</a>
+        </div>
+      </div>
+
+      <!-- ATLASSIAN -->
+      <div class="platform-card">
+        <div class="platform-header">
+          <div class="platform-identity">
+            <div class="platform-icon" style="background:#0052CC;">⚡</div>
+            <div>
+              <div class="platform-name">Atlassian Cloud</div>
+              <div class="platform-type">Dev Tools Suite · Per-App Subscriptions</div>
+            </div>
+          </div>
+          <div class="complexity-badge">
+            <span class="complexity-label">Structural complexity</span>
+            <div class="complexity-dots">
+              <div class="dot active"></div><div class="dot active"></div><div class="dot active"></div><div class="dot active"></div><div class="dot active"></div>
+            </div>
+          </div>
+        </div>
+        <div class="platform-body">
+          <div class="platform-col">
+            <h4>Subscription Architecture</h4>
+            <p>Each product (Jira Software, Confluence, Jira Service Management, Bitbucket, etc.) has its own Free / Standard / Premium / Enterprise plan, billed independently per user tier. Enterprise is billed at the org level across all instances.</p>
+            <p>Atlassian Guard (security layer) is a separate subscription. Free plans support up to 10 users; exceeding triggers auto-upgrade to Standard trial.</p>
+            <div class="tag-row">
+              <span class="tag warm">Per-app plans</span>
+              <span class="tag blue">User tier billing</span>
+              <span class="tag">Guard add-on</span>
+            </div>
+          </div>
+          <div class="platform-col">
+            <h4>Admin View &amp; Seat Management</h4>
+            <p>admin.atlassian.com is the central org dashboard. Admins manage product access per user across all apps. Users are added at org level, then granted product-specific access. This is the closest analogue to a "hub" admin model.</p>
+            <p>Enterprise plan allows up to 150 instances per product type. Billing is complex: users billed per app, per tier. Adding users auto-counts toward billing even if they haven't accepted the invite yet.</p>
+            <div class="tag-row">
+              <span class="tag green">Centralized org admin</span>
+              <span class="tag warm">Auto-billing on invite</span>
+              <span class="tag purple">Enterprise multi-instance</span>
+            </div>
+          </div>
+        </div>
+        <div class="platform-footer">
+          <span class="signal warn"><strong>Design Signal:</strong> Billing on invite (before acceptance) is a UX friction point frequently cited by admins. Consider explicit "pending cost" indicators.</span>
+          <a href="https://support.atlassian.com/subscriptions-and-billing/docs/manage-users-and-user-tiers/" class="platform-link" target="_blank">User &amp; billing docs →</a>
+        </div>
+      </div>
+
+      <!-- FIGMA -->
+      <div class="platform-card">
+        <div class="platform-header">
+          <div class="platform-identity">
+            <div class="platform-icon" style="background:#F24E1E;">🎨</div>
+            <div>
+              <div class="platform-name">Figma</div>
+              <div class="platform-type">Design Tool · Seat-Type Model (Evolved)</div>
+            </div>
+          </div>
+          <div class="complexity-badge">
+            <span class="complexity-label">Structural complexity</span>
+            <div class="complexity-dots">
+              <div class="dot active"></div><div class="dot active"></div><div class="dot active"></div><div class="dot"></div><div class="dot"></div>
+            </div>
+          </div>
+        </div>
+        <div class="platform-body">
+          <div class="platform-col">
+            <h4>Subscription Architecture</h4>
+            <p>As of March 2025, Figma moved from per-product seats to a <strong>unified seat-type model</strong>: one seat per person, with the seat type determining product access. Seat types: <em>Full</em> (edit everything), <em>Dev</em> (dev tools + view), <em>Collab</em> (FigJam edit + Design view), <em>View</em> (free).</p>
+            <p>View seats are free and unlimited. AI credits are shared org-wide with pay-as-you-go option.</p>
+            <div class="tag-row">
+              <span class="tag blue">Unified single seat</span>
+              <span class="tag green">View = always free</span>
+              <span class="tag purple">AI credits: org pool</span>
+            </div>
+          </div>
+          <div class="platform-col">
+            <h4>Admin View &amp; Seat Management</h4>
+            <p>Admin panel lives in the file browser sidebar → Admin. People tab shows all members with seat type column — clickable to change. Seat request flow: users request an upgrade, admin gets notification, can approve/deny. Temporary 3-day access granted while pending.</p>
+            <p>Seat approval settings can be Auto-approve (if seat available) or Manual approval. On Enterprise, billing groups allow sub-org seat pools. New seats are prorated to next invoice.</p>
+            <div class="tag-row">
+              <span class="tag green">Self-service seat requests</span>
+              <span class="tag blue">3-day temp access</span>
+              <span class="tag warm">Prorated billing</span>
+              <span class="tag">Billing groups (Ent.)</span>
+            </div>
+          </div>
+        </div>
+        <div class="platform-footer">
+          <span class="signal"><strong>Design Signal:</strong> The seat request → temp access → approve/deny flow is a standout pattern. It lets users try before the admin commits cost — low friction for both sides.</span>
+          <a href="https://help.figma.com/hc/en-us/articles/360039960434" class="platform-link" target="_blank">Seat management docs →</a>
+        </div>
+      </div>
+
+      <!-- SLACK -->
+      <div class="platform-card">
+        <div class="platform-header">
+          <div class="platform-identity">
+            <div class="platform-icon" style="background:#4A154B;">💬</div>
+            <div>
+              <div class="platform-name">Slack</div>
+              <div class="platform-type">Messaging · Workspace / Org Hierarchy</div>
+            </div>
+          </div>
+          <div class="complexity-badge">
+            <span class="complexity-label">Structural complexity</span>
+            <div class="complexity-dots">
+              <div class="dot active"></div><div class="dot active"></div><div class="dot active"></div><div class="dot"></div><div class="dot"></div>
+            </div>
+          </div>
+        </div>
+        <div class="platform-body">
+          <div class="platform-col">
+            <h4>Subscription Architecture</h4>
+            <p>Plans: Free, Pro, Business+, Enterprise Grid. Guest types (Single-Channel, Multi-Channel) are available on paid plans only and are counted differently from members. Enterprise Grid supports multiple workspaces within one org — a powerful hierarchical model.</p>
+            <div class="tag-row">
+              <span class="tag">Workspace hierarchy</span>
+              <span class="tag warm">Guest tiering</span>
+              <span class="tag blue">Enterprise Grid</span>
+            </div>
+          </div>
+          <div class="platform-col">
+            <h4>Admin View &amp; Seat Management</h4>
+            <p>Workspace owners/admins access settings via Tools &amp; Settings → Manage Members. Roles: Primary Owner → Owner → Admin → Full Member → Single/Multi-Channel Guest. System roles (e.g., Channels Admin, Security Admin, Workflow Admin) allow granular delegation without full admin access — an RBAC overlay on top of structural roles.</p>
+            <p>Enterprise allows custom roles. Org-level vs. workspace-level admin distinction is a key design pattern.</p>
+            <div class="tag-row">
+              <span class="tag green">System roles (RBAC overlay)</span>
+              <span class="tag blue">Org vs. workspace level</span>
+              <span class="tag purple">Custom roles (Ent.)</span>
+            </div>
+          </div>
+        </div>
+        <div class="platform-footer">
+          <span class="signal"><strong>Design Signal:</strong> Slack's system role overlay is elegant — it lets you give someone "Channels Admin" ability without making them a full workspace admin. Useful for Gloo's context.</span>
+          <a href="https://slack.com/help/articles/360018112273" class="platform-link" target="_blank">Roles docs →</a>
+        </div>
+      </div>
+
+      <!-- NOTION -->
+      <div class="platform-card">
+        <div class="platform-header">
+          <div class="platform-identity">
+            <div class="platform-icon" style="background:#191919;">📝</div>
+            <div>
+              <div class="platform-name">Notion</div>
+              <div class="platform-type">Workspace · Member / Guest Model</div>
+            </div>
+          </div>
+          <div class="complexity-badge">
+            <span class="complexity-label">Structural complexity</span>
+            <div class="complexity-dots">
+              <div class="dot active"></div><div class="dot active"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>
+            </div>
+          </div>
+        </div>
+        <div class="platform-body">
+          <div class="platform-col">
+            <h4>Subscription Architecture</h4>
+            <p>Plans: Free, Plus ($10/mo), Business ($20/mo), Enterprise (custom). Seat = 1 member. Guests are always free but limited by plan (10 Free, 100 Plus, 250 Business). Mid-2025: bundled unlimited AI into Business and Enterprise — no more separate AI add-on.</p>
+            <div class="tag-row">
+              <span class="tag blue">1 seat = 1 member</span>
+              <span class="tag green">Guest = free</span>
+              <span class="tag purple">AI bundled (Biz+)</span>
+            </div>
+          </div>
+          <div class="platform-col">
+            <h4>Admin View &amp; Seat Management</h4>
+            <p>Settings → People is the member management hub. Roles: Organization Owner (Enterprise) → Workspace Owner → Membership Admin (Ent. only) → Member → Guest. The Membership Admin role is notable — it exists only on Enterprise and allows member management without workspace settings access.</p>
+            <p>When you remove a member, their seat stays "available" until billing period end — you can swap a new person in at no extra cost. This seat-recycling model is user-friendly for teams with turnover.</p>
+            <div class="tag-row">
+              <span class="tag green">Seat recycling on removal</span>
+              <span class="tag blue">Membership Admin role</span>
+              <span class="tag">Suggestions: guests → members</span>
+            </div>
+          </div>
+        </div>
+        <div class="platform-footer">
+          <span class="signal"><strong>Design Signal:</strong> Notion's "suggestions" feature (recommending guest-to-member upgrades) is a smart proactive upsell that feels helpful, not pushy.</span>
+          <a href="https://www.notion.com/help/billing" class="platform-link" target="_blank">Billing docs →</a>
+        </div>
+      </div>
+
+      <!-- CANVA -->
+      <div class="platform-card">
+        <div class="platform-header">
+          <div class="platform-identity">
+            <div class="platform-icon" style="background:#7D2AE7;">🖼️</div>
+            <div>
+              <div class="platform-name">Canva</div>
+              <div class="platform-type">Design Platform · Org → Team Hierarchy</div>
+            </div>
+          </div>
+          <div class="complexity-badge">
+            <span class="complexity-label">Structural complexity</span>
+            <div class="complexity-dots">
+              <div class="dot active"></div><div class="dot active"></div><div class="dot active"></div><div class="dot"></div><div class="dot"></div>
+            </div>
+          </div>
+        </div>
+        <div class="platform-body">
+          <div class="platform-col">
+            <h4>Subscription Architecture</h4>
+            <p>Plans: Free, Pro ($15/mo), Business ($10/user/mo), Enterprise (custom). Canva Teams discontinued for new sign-ups; Business is the current team entry point. Enterprise adds multi-team structure, SSO, SCIM. Magic Studio AI features have usage caps (Free: 50 total; Pro/Business: 500/mo).</p>
+            <div class="tag-row">
+              <span class="tag blue">Business: 1 team max</span>
+              <span class="tag warm">Enterprise: multi-team</span>
+              <span class="tag purple">AI usage caps</span>
+            </div>
+          </div>
+          <div class="platform-col">
+            <h4>Admin View &amp; Seat Management</h4>
+            <p>Org Admin → Team Admin hierarchy. Org Admins set default permissions for all teams; Team Admins can override if allowed. The Controls &amp; Permissions section is layered: Org → Team tabs, with toggle-based settings per capability. Roles within teams: Member, Template Designer, Admin.</p>
+            <p>Brand Kits and publishing workflows have their own permission axis, separate from seat type — a parallel permission layer that's unique to Canva's use case.</p>
+            <div class="tag-row">
+              <span class="tag green">Org default → team override</span>
+              <span class="tag blue">Brand permissions axis</span>
+              <span class="tag">Publishing approval flow</span>
+            </div>
+          </div>
+        </div>
+        <div class="platform-footer">
+          <span class="signal"><strong>Design Signal:</strong> The "org sets defaults, teams can override" model is a powerful pattern for platforms with autonomous sub-groups sharing org-level brand standards.</span>
+          <a href="https://www.canva.com/help/roles-and-permissions/" class="platform-link" target="_blank">Roles &amp; permissions docs →</a>
+        </div>
+      </div>
+
+      <!-- SALESFORCE -->
+      <div class="platform-card">
+        <div class="platform-header">
+          <div class="platform-identity">
+            <div class="platform-icon" style="background:#00A1E0;">☁️</div>
+            <div>
+              <div class="platform-name">Salesforce</div>
+              <div class="platform-type">CRM Platform · License × Profile × Permission</div>
+            </div>
+          </div>
+          <div class="complexity-badge">
+            <span class="complexity-label">Structural complexity</span>
+            <div class="complexity-dots">
+              <div class="dot active"></div><div class="dot active"></div><div class="dot active"></div><div class="dot active"></div><div class="dot active"></div>
+            </div>
+          </div>
+        </div>
+        <div class="platform-body">
+          <div class="platform-col">
+            <h4>Subscription Architecture</h4>
+            <p>Three independent access layers: <em>Edition</em> (org-level feature ceiling: Essentials → Enterprise → Unlimited), <em>User License</em> (seat type per user: Salesforce, Platform, Identity, etc.), and <em>Feature License</em> (add-on entitlements: Marketing Cloud, Flow, etc.). Login-based licensing also available as alternative to seat-based.</p>
+            <div class="tag-row">
+              <span class="tag warm">3-layer access model</span>
+              <span class="tag blue">Login-based option</span>
+              <span class="tag">Feature licenses</span>
+            </div>
+          </div>
+          <div class="platform-col">
+            <h4>Admin View &amp; Seat Management</h4>
+            <p>Setup → Users is the management hub. Access is controlled by: Profiles (baseline minimum access — every user must have one) + Permission Sets (additive access grants) + Permission Set Groups (bundles of permission sets). Salesforce is actively migrating away from profiles toward permission-set-led models.</p>
+            <p>The Role Hierarchy is a separate construct used for data visibility (record access), orthogonal to permission roles. The most complex access model of any platform reviewed.</p>
+            <div class="tag-row">
+              <span class="tag warn">Profiles → permission sets</span>
+              <span class="tag purple">Role hierarchy = data visibility</span>
+              <span class="tag green">License Mgmt App</span>
+            </div>
+          </div>
+        </div>
+        <div class="platform-footer">
+          <span class="signal warn"><strong>Design Signal:</strong> Salesforce's 3-layer model is powerful but notoriously complex — it's what admins complain about most. Avoid this in a B2SMB context; aim for 2 layers max.</span>
+          <a href="https://admin.salesforce.com/blog/2026/the-salesforce-admins-guide-to-profiles-and-permissions" class="platform-link" target="_blank">Admin guide →</a>
+        </div>
+      </div>
+
+      <!-- ADOBE CREATIVE CLOUD -->
+      <div class="platform-card">
+        <div class="platform-header">
+          <div class="platform-identity">
+            <div class="platform-icon" style="background:#FF0000;">🅰️</div>
+            <div>
+              <div class="platform-name">Adobe Creative Cloud</div>
+              <div class="platform-type">Creative Suite · Product Profile Model</div>
+            </div>
+          </div>
+          <div class="complexity-badge">
+            <span class="complexity-label">Structural complexity</span>
+            <div class="complexity-dots">
+              <div class="dot active"></div><div class="dot active"></div><div class="dot active"></div><div class="dot active"></div><div class="dot"></div>
+            </div>
+          </div>
+        </div>
+        <div class="platform-body">
+          <div class="platform-col">
+            <h4>Subscription Architecture</h4>
+            <p>Three plan types: Teams (direct purchase, per seat), VIP (volume contract), Enterprise (ETLA annual). Licenses are per-product or All Apps. A single All Apps license grants access to every Creative Cloud app. Product-specific licenses (e.g. Photoshop-only) cost less.</p>
+            <p>Adobe Stock and Acrobat Sign are usage-based (not seat-based), billed on overage. AI generative credits have separate metering.</p>
+            <div class="tag-row">
+              <span class="tag blue">All Apps vs. single app</span>
+              <span class="tag warm">Usage-based: Stock + Sign</span>
+              <span class="tag purple">AI generative credits</span>
+            </div>
+          </div>
+          <div class="platform-col">
+            <h4>Admin View &amp; Seat Management</h4>
+            <p>The Adobe Admin Console (adminconsole.adobe.com) is the control plane for the entire org. Admin roles: System Admin → Product Admin → Product Profile Admin → User Group Admin. Product Profiles define which apps/services a user can access — they act as a permission template applied to license assignments.</p>
+            <p>Key limitation: no custom admin roles with granular permissions (all admin roles are fixed). SCIM only on Enterprise + SSO. No last-login tracking, making unused seat identification difficult.</p>
+            <div class="tag-row">
+              <span class="tag green">Product profiles as templates</span>
+              <span class="tag warn">No custom admin roles</span>
+              <span class="tag warn">No last-login tracking</span>
+              <span class="tag">Storage admin is a role</span>
+            </div>
+          </div>
+        </div>
+        <div class="platform-footer">
+          <span class="signal warn"><strong>Design Signal:</strong> Adobe's Product Profile system is a strong pattern — pre-configured access bundles that admins assign to users, removing the need to configure per-user.</span>
+          <a href="https://helpx.adobe.com/enterprise/using/admin-console.html" class="platform-link" target="_blank">Admin Console docs →</a>
+        </div>
+      </div>
+
+    </div><!-- /platform-grid -->
+  </section>
+
+  <!-- PATTERN TAXONOMY -->
+  <section id="patterns" class="section">
+    <div class="section-header">
+      <span class="section-num">03</span>
+      <h2 class="section-title">Design Pattern Taxonomy</h2>
+    </div>
+
+    <p style="color:var(--text-muted); font-size:14px; margin-bottom:28px; max-width:680px;">Six distinct patterns emerged across these platforms. Most platforms blend 2–3 of these. Understanding which patterns your platform already exhibits helps you borrow intelligently from others.</p>
+
+    <div class="callout insight">
+      <span class="callout-icon">💡</span>
+      <div class="callout-body">
+        <strong>Pattern 1: Unified Seat with Product-Access Flags</strong>
+        <p>One seat per user; the <em>type</em> of that seat determines which products they can access. This simplifies the admin's mental model — there's only one thing to assign per person. <strong>Best example: Figma (post-March 2025)</strong>. The challenge is communicating what each seat type unlocks clearly enough that admins don't get it wrong.</p>
+      </div>
+    </div>
+
+    <div class="callout watch">
+      <span class="callout-icon">⚠️</span>
+      <div class="callout-body">
+        <strong>Pattern 2: Per-Product Seat Pools</strong>
+        <p>Each product has its own independently managed seat count and plan tier. Users can have different roles across products. <strong>Best examples: Monday.com, Atlassian</strong>. Powerful but cognitively heavy for admins managing multiple products at once — requires a strong "hub" overview screen to prevent confusion.</p>
+      </div>
+    </div>
+
+    <div class="callout model">
+      <span class="callout-icon">✅</span>
+      <div class="callout-body">
+        <strong>Pattern 3: Free Tier + Individual Upgrade</strong>
+        <p>The base product is always free with unlimited seats; specific users can be upgraded to a higher tier with additional capabilities or resources. This is Gloo's own Gloo+ model. The closest analogues are Slack's guest roles and Figma's View seats — both free and unlimited, with upgrade paths for individuals who need more. No platform reviewed does this as the <em>primary</em> tier for a product, making Gloo's model relatively novel.</p>
+      </div>
+    </div>
+
+    <div class="callout insight">
+      <span class="callout-icon">💡</span>
+      <div class="callout-body">
+        <strong>Pattern 4: License as Permission Profile</strong>
+        <p>A pre-configured access template (profile/bundle) is assigned to a user, granting a consistent set of capabilities without per-user configuration. <strong>Best examples: Adobe (Product Profiles), Salesforce (Permission Set Groups)</strong>. Reduces admin error at scale; ideal when you have large teams needing consistent access.</p>
+      </div>
+    </div>
+
+    <div class="callout watch">
+      <span class="callout-icon">⚠️</span>
+      <div class="callout-body">
+        <strong>Pattern 5: Nested Admin Delegation</strong>
+        <p>Org Admin → Group/Dept Admin → End User. Each level can manage only the users and settings below them. <strong>Examples: Canva (Org → Team Admin), Monday.com (Admin → Dept Owner), Google Workspace (OU-based), Slack (Org → Workspace Admin)</strong>. Critical for church networks or multi-campus orgs where a central admin can't manage everyone.</p>
+      </div>
+    </div>
+
+    <div class="callout model">
+      <span class="callout-icon">✅</span>
+      <div class="callout-body">
+        <strong>Pattern 6: Usage-Based Resource Meters Within Seats</strong>
+        <p>Seat grants access; a separate resource counter (credits, tokens, API calls) governs <em>how much</em> the user can do within that access. <strong>Examples: Figma (AI credits, org-pooled), Adobe (generative credits), Canva (Magic Studio usage caps)</strong>. Gloo needs this for Content Studio (AI credits) and Ministry Chat (AI tokens). The key UX question is where and how these meters are surfaced — to the user, the admin, or both.</p>
+      </div>
+    </div>
+
+    <!-- Matrix -->
+    <h3 style="font-size:17px; font-weight:600; color:#fff; margin:36px 0 16px;">Pattern Distribution Across Platforms</h3>
+    <div class="pattern-matrix">
+      <div class="matrix-row header-row">
+        <div class="matrix-cell header">Platform</div>
+        <div class="matrix-cell header">Patterns Present</div>
+      </div>
+      <div class="matrix-row">
+        <div class="matrix-cell label">Monday.com</div>
+        <div class="matrix-cell"><div class="platform-pills">
+          <span class="ppill">Per-product pools</span>
+          <span class="ppill">Nested delegation</span>
+          <span class="ppill">Free viewer tier</span>
+        </div></div>
+      </div>
+      <div class="matrix-row">
+        <div class="matrix-cell label">Google Workspace</div>
+        <div class="matrix-cell"><div class="platform-pills">
+          <span class="ppill">Unified license</span>
+          <span class="ppill">OU delegation</span>
+          <span class="ppill">Edition ceiling</span>
+        </div></div>
+      </div>
+      <div class="matrix-row">
+        <div class="matrix-cell label">Atlassian</div>
+        <div class="matrix-cell"><div class="platform-pills">
+          <span class="ppill">Per-product pools</span>
+          <span class="ppill">Org hub model</span>
+          <span class="ppill">User tier billing</span>
+        </div></div>
+      </div>
+      <div class="matrix-row">
+        <div class="matrix-cell label">Figma</div>
+        <div class="matrix-cell"><div class="platform-pills">
+          <span class="ppill">Unified seat type</span>
+          <span class="ppill">Free view tier</span>
+          <span class="ppill">Usage meter (AI)</span>
+          <span class="ppill">Self-service requests</span>
+        </div></div>
+      </div>
+      <div class="matrix-row">
+        <div class="matrix-cell label">Slack</div>
+        <div class="matrix-cell"><div class="platform-pills">
+          <span class="ppill">Nested delegation</span>
+          <span class="ppill">RBAC overlay</span>
+          <span class="ppill">Guest tiering</span>
+        </div></div>
+      </div>
+      <div class="matrix-row">
+        <div class="matrix-cell label">Notion</div>
+        <div class="matrix-cell"><div class="platform-pills">
+          <span class="ppill">1 seat = 1 member</span>
+          <span class="ppill">Guest free tier</span>
+          <span class="ppill">Seat recycling</span>
+          <span class="ppill">AI bundled</span>
+        </div></div>
+      </div>
+      <div class="matrix-row">
+        <div class="matrix-cell label">Canva</div>
+        <div class="matrix-cell"><div class="platform-pills">
+          <span class="ppill">Nested delegation</span>
+          <span class="ppill">Org default overrides</span>
+          <span class="ppill">Usage meter (AI)</span>
+          <span class="ppill">Brand permission axis</span>
+        </div></div>
+      </div>
+      <div class="matrix-row">
+        <div class="matrix-cell label">Salesforce</div>
+        <div class="matrix-cell"><div class="platform-pills">
+          <span class="ppill">3-layer license model</span>
+          <span class="ppill">Permission profiles</span>
+          <span class="ppill">Login-based option</span>
+        </div></div>
+      </div>
+      <div class="matrix-row">
+        <div class="matrix-cell label">Adobe CC</div>
+        <div class="matrix-cell"><div class="platform-pills">
+          <span class="ppill">Product profiles</span>
+          <span class="ppill">All Apps vs. single</span>
+          <span class="ppill">Usage meter (AI + Stock)</span>
+          <span class="ppill">Nested admin roles</span>
+        </div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- RECOMMENDATIONS -->
+  <section id="recommendations" class="section">
+    <div class="section-header">
+      <span class="section-num">04</span>
+      <h2 class="section-title">Design Recommendations for Gloo Workspace</h2>
+    </div>
+
+    <div class="rec-grid">
+
+      <div class="rec-card">
+        <span class="rec-num">REC 01</span>
+        <h4>Build a "Workspace Hub" Admin View — Not Just Per-Product Admin</h4>
+        <p>The most effective pattern across Atlassian, Monday, and Adobe is a single org-level dashboard where admins can see <em>all members</em> and <em>all product access states</em> in one place. Each row = a member; columns = each product + their seat status within it. This prevents the "tab-switching" admin experience.</p>
+        <div class="rec-inspired">Inspired by: <span>Atlassian admin.atlassian.com · Monday.com Administration panel</span></div>
+      </div>
+
+      <div class="rec-card">
+        <span class="rec-num">REC 02</span>
+        <h4>Use a Self-Service Seat Request Flow with a "Pending" Grace State</h4>
+        <p>Rather than admin-only seat assignment, let members request access to a product or request a Gloo+ upgrade. Admins approve/deny. Figma's 3-day temporary access while pending is a strong model — it reduces friction for the member while protecting the admin's budget control.</p>
+        <div class="rec-inspired">Inspired by: <span>Figma seat request + temp access flow</span></div>
+      </div>
+
+      <div class="rec-card">
+        <span class="rec-num">REC 03</span>
+        <h4>Treat Gloo+ as an "Upgrade Overlay" — Not a Separate Tier</h4>
+        <p>Since Gloo Communications is always free with unlimited seats, the Gloo+ upgrade should feel like a capability unlock within a free product — not a plan change. Design it as a toggle/badge on individual members in the admin table: a "+" indicator next to their name. The upgrade path should be inline, not redirect-to-billing.</p>
+        <div class="rec-inspired">Inspired by: <span>Figma View → Full seat type change · Notion guest → member upgrade</span></div>
+      </div>
+
+      <div class="rec-card">
+        <span class="rec-num">REC 04</span>
+        <h4>Surface AI Resource Meters at Both Admin and Member Level</h4>
+        <p>For Content Studio (AI credits) and Ministry Chat (AI tokens), show two views: an <strong>admin aggregate view</strong> (total credits/tokens purchased, consumed, remaining across org + per-member breakdown) and a <strong>member personal view</strong> (my credits, my usage this month). Consider org-level credit pooling as default with optional per-member caps.</p>
+        <div class="rec-inspired">Inspired by: <span>Figma org-pooled AI credits · Adobe generative credit tracking · Canva per-user Magic Studio caps</span></div>
+      </div>
+
+      <div class="rec-card">
+        <span class="rec-num">REC 05</span>
+        <h4>Adopt a Nested Admin Delegation Model for Multi-Campus Use</h4>
+        <p>If Gloo serves multi-campus churches or networks, the Org Admin → Workspace Admin (per campus/church) → Member hierarchy is critical. Use Canva's pattern of "org sets defaults, sub-admins can override within bounds." This prevents central IT becoming a bottleneck while preserving top-level governance.</p>
+        <div class="rec-inspired">Inspired by: <span>Canva Enterprise org/team structure · Slack org vs. workspace admin split</span></div>
+      </div>
+
+      <div class="rec-card">
+        <span class="rec-num">REC 06</span>
+        <h4>Design Clear "Product Non-Member" States</h4>
+        <p>When a user has access to the Workspace but hasn't been assigned to a specific product, what do they see? Monday's "Product Non-Member" pattern — read-only access by default — is worth adopting. Members should land in the Workspace, discover all products, and see clear "Request Access" entry points. Avoid empty states or 404-style blocks.</p>
+        <div class="rec-inspired">Inspired by: <span>Monday.com Product Non-Member role · Figma View seat as default for new joiners</span></div>
+      </div>
+
+    </div>
+
+    <div class="callout watch" style="margin-top:24px;">
+      <span class="callout-icon">⚠️</span>
+      <div class="callout-body">
+        <strong>Anti-Pattern to Avoid: Billing-on-Invite</strong>
+        <p>Atlassian charges as soon as a user is invited, even before acceptance. This causes admin anxiety and over-provisioning. Gloo should bill only on acceptance/activation, with a clear "pending invite" state that doesn't incur cost.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- USER PATH -->
+  <section id="userpath" class="section">
+    <div class="section-header">
+      <span class="section-num">05</span>
+      <h2 class="section-title">Proposed Admin User Path</h2>
+    </div>
+
+    <p style="color:var(--text-muted); font-size:14px; margin-bottom:32px; max-width:680px;">A recommended flow for a Workspace Admin managing their organization. This covers the most common tasks and is designed to minimize context-switching.</p>
+
+    <div class="path-flow">
+
+      <div class="path-step">
+        <div class="step-track">
+          <div class="step-node active">01</div>
+          <div class="step-line"></div>
+        </div>
+        <div class="step-content">
+          <h4>Workspace Hub — Members Overview</h4>
+          <p>Admin lands on a unified member table. Each row = one member. Columns show: Name, Role, Product Access (icons per product with seat status), Gloo+ status, Last Active.</p>
+          <div class="step-detail">
+            <ul>
+              <li>Filter by product, seat status, or role</li>
+              <li>Bulk-select for role changes or product assignments</li>
+              <li>Pending invites shown in a distinct state (no cost yet)</li>
+              <li>Notification badge for pending seat upgrade requests</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="path-step">
+        <div class="step-track">
+          <div class="step-node active">02</div>
+          <div class="step-line"></div>
+        </div>
+        <div class="step-content">
+          <h4>Invite Member → Choose Product Access</h4>
+          <p>Admin invites by email. A second step shows all Workspace products — admin checks which products to grant access to and what seat tier. Gloo Communications is pre-checked as free. AI products show credit/token allocation upfront.</p>
+          <div class="step-detail">
+            <ul>
+              <li>Products listed with current seat cost impact</li>
+              <li>Running total of monthly cost change shown</li>
+              <li>Invite sent — member appears as "Pending" (no billing)</li>
+              <li>Billing starts on first login / acceptance</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="path-step">
+        <div class="step-track">
+          <div class="step-node active">03</div>
+          <div class="step-line"></div>
+        </div>
+        <div class="step-content">
+          <h4>Handle Seat Upgrade Requests</h4>
+          <p>Members can request access to a product or a Gloo+ upgrade from within the product. Admin receives a notification queue. Each request shows: who, what product/tier, and the cost impact.</p>
+          <div class="step-detail">
+            <ul>
+              <li>One-tap Approve / Deny from notification or request queue</li>
+              <li>Optional: grant temporary access (3-day, inspired by Figma)</li>
+              <li>Denied requests trigger a customizable message to the member</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="path-step">
+        <div class="step-track">
+          <div class="step-node active">04</div>
+          <div class="step-line"></div>
+        </div>
+        <div class="step-content">
+          <h4>Manage a Member's Access (Inline Panel)</h4>
+          <p>Clicking a member opens a right-side panel — no full-page navigation. Shows their complete access state across all products, Gloo+ status, and AI resource usage for this billing period.</p>
+          <div class="step-detail">
+            <ul>
+              <li>Seat type change per product — dropdown, immediate</li>
+              <li>Toggle Gloo+ on/off with cost preview</li>
+              <li>AI usage bar: X credits used of Y allocated (Content Studio)</li>
+              <li>AI token usage bar (Ministry Chat) — same pattern</li>
+              <li>Remove from workspace → releases seat at next billing cycle</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="path-step">
+        <div class="step-track">
+          <div class="step-node">05</div>
+          <div class="step-line"></div>
+        </div>
+        <div class="step-content">
+          <h4>Subscription & Usage Overview</h4>
+          <p>A separate Billing section (not mixed into member management) gives the admin a product-by-product breakdown: seats used vs. purchased, AI credits/tokens consumed vs. available, and the projected next invoice.</p>
+          <div class="step-detail">
+            <ul>
+              <li>Per-product cost cards with seat count controls</li>
+              <li>AI resource pools — aggregate + per-member drilldown</li>
+              <li>Upgrade / downgrade product plans from this view</li>
+              <li>Invoice history and next billing date</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="path-step">
+        <div class="step-track">
+          <div class="step-node">06</div>
+        </div>
+        <div class="step-content">
+          <h4>Member's Own View (End-User)</h4>
+          <p>A member sees only their own access state — what products they have, their Gloo+ status, and their personal AI credit/token usage. No access to billing, other members' data, or subscription management (unless they have an admin role).</p>
+          <div class="step-detail">
+            <ul>
+              <li>My Products: icons + access level for each</li>
+              <li>Request Access button on locked/unassigned products</li>
+              <li>My AI usage: credits remaining this month (Content Studio)</li>
+              <li>Upgrade to Gloo+ prompt if on free tier (if allowed by admin)</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <div class="footnote">
+    <p><strong>Sources &amp; Reference Links:</strong> Monday.com: <a href="https://support.monday.com/hc/en-us/articles/360002144900" target="_blank">User types</a> · <a href="https://support.monday.com/hc/en-us/articles/360002426980" target="_blank">User management</a> | Google Workspace: <a href="https://knowledge.workspace.google.com/admin/users/about-administrator-roles" target="_blank">Admin roles</a> | Atlassian: <a href="https://support.atlassian.com/subscriptions-and-billing/docs/manage-users-and-user-tiers/" target="_blank">User tiers</a> | Figma: <a href="https://help.figma.com/hc/en-us/articles/360039960434" target="_blank">Seats</a> · <a href="https://help.figma.com/hc/en-us/articles/27468498501527" target="_blank">Billing update 2025</a> | Slack: <a href="https://slack.com/help/articles/360018112273" target="_blank">Roles</a> | Notion: <a href="https://www.notion.com/help/whos-who-in-a-workspace" target="_blank">Who's who</a> · <a href="https://www.notion.com/help/billing" target="_blank">Billing</a> | Canva: <a href="https://www.canva.com/help/roles-and-permissions/" target="_blank">Roles &amp; permissions</a> | Salesforce: <a href="https://admin.salesforce.com/blog/2026/the-salesforce-admins-guide-to-profiles-and-permissions" target="_blank">Profiles guide</a> | Adobe: <a href="https://helpx.adobe.com/enterprise/using/admin-console.html" target="_blank">Admin Console</a></p>
+    <p style="margin-top:10px;">Research compiled May 2026. Subscription models and feature sets change frequently — verify current docs before spec finalization.</p>
+  </div>
+
+</div>
+</body>
+</html>
