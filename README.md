@@ -1,6 +1,6 @@
 # SaaS Subscription UX — Landscape Assessment
 
-**Live site:** https://cal-at-gloo.github.io/subscription-landscape-assessment/
+**Live site:** https://cal-at-gloo.github.io/subscription-landscape-assessment/subscription-landscape-assessment.html
 
 A design research document analyzing seat management patterns, admin views, and subscription architecture across 9 major SaaS platforms. Created as input for a redesign spec for a multi-product workspace platform.
 
@@ -29,7 +29,7 @@ This research explores how complex, multi-product SaaS platforms handle:
 
 ## Contents
 
-- **`index.html`** — Full research document. Open in any browser or visit the live site above. Includes:
+- **`subscription-landscape-assessment.html`** — Full research document. Open in any browser or visit the live site above. Includes:
   - Platform-by-platform breakdowns with subscription architecture, admin UX notes, and design signals
   - A design pattern taxonomy with 6 cross-platform patterns identified
   - 6 design recommendations with platform inspiration cited
@@ -53,7 +53,7 @@ This research explores how complex, multi-product SaaS platforms handle:
 
 ## How to Use
 
-Visit the **[live site](https://cal-at-gloo.github.io/subscription-landscape-assessment/)** or open `index.html` in a browser. No build step or dependencies required.
+Visit the **[live site](https://cal-at-gloo.github.io/subscription-landscape-assessment/subscription-landscape-assessment.html)** or open `subscription-landscape-assessment.html` in a browser. No build step or dependencies required.
 
 ## Research Date
 
